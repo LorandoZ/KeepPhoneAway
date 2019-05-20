@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { createStackNavigator, createAppContainer, createBottomTabNavigator, createMaterialTopTabNavigator } from "react-navigation";
-import { Button, ThemeProvider } from 'react-native-elements';
+import { Button, ThemeProvider,Icon } from 'react-native-elements';
 
 class StudyTimerScreen extends React.Component {
   render() {
@@ -63,6 +63,7 @@ class SleepStatisticsScreen extends React.Component {
   }
 }
 
+// Timer Navigator
 const TopTimerNavigator = createMaterialTopTabNavigator(
   {
     Study: StudyTimerScreen,
@@ -71,6 +72,7 @@ const TopTimerNavigator = createMaterialTopTabNavigator(
   }
 );
 
+// Statistics Navigator
 const TopStatisticsNavigator = createMaterialTopTabNavigator(
   {
     Study: StudyStatisticsScreen,
@@ -79,10 +81,34 @@ const TopStatisticsNavigator = createMaterialTopTabNavigator(
   }
 );
 
+// root navigator 
 const BottomTabNavigator = createBottomTabNavigator(
   {
     Timer: TopTimerNavigator,
     Statistics: TopStatisticsNavigator,
+  },
+  {
+    defaultNavigationOptions: ({ navigation }) => ({
+      // BottomTabNavigator
+      tabBarIcon:({focused,horizontal,tintColor})=>{
+        const {routeName}=navigation.state;
+        let iconName;
+        if(routeName=='Timer')iconName='ios-timer'
+        else if(routeName=='Statistics')iconName='ios-ribbon';
+
+        return <Icon
+          name={iconName}
+          type='ionicon'
+          size={25}
+          color={tintColor}
+          containerStyle={{marginTop:8}}
+          />;
+      },
+    }),
+    tabBarOptions: {
+      activeTintColor: 'dodgerblue',
+      inactiveTintColor: 'gray',
+    },
   }
 );
 
