@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text,Image } from "react-native";
 import { createStackNavigator, createAppContainer, createBottomTabNavigator, createMaterialTopTabNavigator } from "react-navigation";
 import { Button, ThemeProvider,Icon } from 'react-native-elements';
 
@@ -7,7 +7,10 @@ class StudyTimerScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>StudyTimerScreen</Text>
+        <Image
+          style={{width: '100%', height: '100%'}}
+          source={{uri:'http://134.209.3.61/img/test.png'}}
+        />
       </View>
     );
   }
@@ -101,7 +104,7 @@ const BottomTabNavigator = createBottomTabNavigator(
           type='ionicon'
           size={25}
           color={tintColor}
-          containerStyle={{marginTop:8}}
+          containerStyle={{marginTop:6}}
           />;
       },
     }),
