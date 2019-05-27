@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text } from "react-native";
 import { createStackNavigator, createAppContainer, createBottomTabNavigator, createMaterialTopTabNavigator } from "react-navigation";
 import { Button, ThemeProvider,Icon } from 'react-native-elements';
+import StudyStatistics from "./components/StudyStatistics";
 
 class StudyTimerScreen extends React.Component {
   render() {
@@ -36,9 +37,7 @@ class SleepTimerScreen extends React.Component {
 class StudyStatisticsHomeScreen extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>StudyStatisticsHomeScreen</Text>
-      </View>
+      <StudyStatistics/>
     );
   }
 }
