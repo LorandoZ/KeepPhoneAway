@@ -2,12 +2,22 @@ import React from "react";
 import { View, Text } from "react-native";
 import { createStackNavigator, createAppContainer, createBottomTabNavigator, createMaterialTopTabNavigator } from "react-navigation";
 import { Button, ThemeProvider,Icon } from 'react-native-elements';
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
+
 
 class StudyTimerScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>StudyTimerScreen</Text>
+        <AnimatedCircularProgress
+          ref={(ref) => this.circularProgress = ref}
+          duration={800000}
+          size={120}
+          width={15}
+          fill={100}
+          tintColor="#00e0ff"
+          onAnimationComplete={() => console.log('onAnimationComplete')}
+          backgroundColor="#3d5875"/>
       </View>
     );
   }
