@@ -13,11 +13,11 @@ class StudyTimerScreen extends React.Component {
   }
 }
 
-class LunchTimerScreen extends React.Component {
+class MealTimerScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>LunchTimerScreen</Text>
+        <Text>MealTimerScreen</Text>
       </View>
     );
   }
@@ -33,31 +33,61 @@ class SleepTimerScreen extends React.Component {
   }
 }
 
-class StudyStatisticsScreen extends React.Component {
+class StudyStatisticsHomeScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>StudyStatisticsScreen</Text>
+        <Text>StudyStatisticsHomeScreen</Text>
       </View>
     );
   }
 }
 
-class LunchStatisticsScreen extends React.Component {
+class StudyStatisticsDetailScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>LunchStatisticsScreen</Text>
+        <Text>StudyStatisticsDetailScreen</Text>
       </View>
     );
   }
 }
 
-class SleepStatisticsScreen extends React.Component {
+class MealStatisticsHomeScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>SleepStatisticsScreen</Text>
+        <Text>MealStatisticsHomeScreen</Text>
+      </View>
+    );
+  }
+}
+
+class MealStatisticsDetailScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text>MealStatisticsDetailScreen</Text>
+      </View>
+    );
+  }
+}
+
+class SleepStatisticsHomeScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text>SleepStatisticsHomeScreen</Text>
+      </View>
+    );
+  }
+}
+
+class SleepStatisticsDetailScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text>SleepStatisticsDetailScreen</Text>
       </View>
     );
   }
@@ -67,17 +97,50 @@ class SleepStatisticsScreen extends React.Component {
 const TopTimerNavigator = createMaterialTopTabNavigator(
   {
     Study: StudyTimerScreen,
-    Lunch: LunchTimerScreen,
+    Meal: MealTimerScreen,
     Sleep: SleepTimerScreen,
   }
 );
 
+const StudyStatisticsStackScreen = createStackNavigator(
+  {
+    StudyStatisticsHome: StudyStatisticsHomeScreen,
+    StudyStatisticsDetail: StudyStatisticsDetailScreen
+  },
+  {
+    initialRouteName: "StudyStatisticsHome",
+    headerMode: "none"
+  }
+)
+
+const MealStatisticsStackScreen = createStackNavigator(
+  {
+    MealStatisticsHome: MealStatisticsHomeScreen,
+    MealStatisticsDetail: MealStatisticsDetailScreen
+  },
+  {
+    initialRouteName: "MealStatisticsHome",
+    headerMode: "none"
+  }
+)
+
+const SleepStatisticsStackScreen = createStackNavigator(
+  {
+    SleepStatisticsHome: SleepStatisticsHomeScreen,
+    SleepStatisticsDetail: SleepStatisticsDetailScreen
+  },
+  {
+    initialRouteName: "SleepStatisticsHome",
+    headerMode: "none"
+  }
+)
+
 // Statistics Navigator
 const TopStatisticsNavigator = createMaterialTopTabNavigator(
   {
-    Study: StudyStatisticsScreen,
-    Lunch: LunchStatisticsScreen,
-    Sleep: SleepStatisticsScreen,
+    Study: StudyStatisticsStackScreen,
+    Meal:  MealStatisticsStackScreen,
+    Sleep: SleepStatisticsStackScreen,
   }
 );
 
