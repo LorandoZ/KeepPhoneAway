@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, AsyncStorage } from "react-native";
 import { createStackNavigator, createAppContainer, createBottomTabNavigator, createMaterialTopTabNavigator } from "react-navigation";
 import { Button, ThemeProvider,Icon } from 'react-native-elements';
+import StudyStatistics from "./components/StudyStatistics";
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { FlatGrid } from 'react-native-super-grid';
 
@@ -47,9 +48,7 @@ class SleepTimerScreen extends React.Component {
 class StudyStatisticsHomeScreen extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        
-      </View>
+      <StudyStatistics/>
     );
   }
 }
