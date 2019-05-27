@@ -13,6 +13,7 @@
     "react-native-circular-progress": "^1.1.0",
     "react-native-elements": "^1.1.0",
     "react-native-gesture-handler": "^1.2.0",
+    "react-native-super-grid": "^3.0.4",
     "react-native-svg": "^9.4.0",
     "react-native-vector-icons": "^6.4.2",
     "react-navigation": "^3.9.1"

@@ -1,23 +1,24 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, AsyncStorage } from "react-native";
 import { createStackNavigator, createAppContainer, createBottomTabNavigator, createMaterialTopTabNavigator } from "react-navigation";
 import { Button, ThemeProvider,Icon } from 'react-native-elements';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import { FlatGrid } from 'react-native-super-grid';
 
 
 class StudyTimerScreen extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
         <AnimatedCircularProgress
           ref={(ref) => this.circularProgress = ref}
-          duration={800000}
-          size={120}
+          duration={80000}
+          size={300}
           width={15}
           fill={100}
-          tintColor="#00e0ff"
+          tintColor="dodgerblue"
           onAnimationComplete={() => console.log('onAnimationComplete')}
-          backgroundColor="#3d5875"/>
+          backgroundColor="gray"/>
       </View>
     );
   }
@@ -47,7 +48,7 @@ class StudyStatisticsHomeScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>StudyStatisticsHomeScreen</Text>
+        
       </View>
     );
   }
@@ -67,7 +68,10 @@ class MealStatisticsHomeScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>MealStatisticsHomeScreen</Text>
+        <Button
+          title="Go to MealStatisticsDetail"
+          onPress={() => this.props.navigation.push('MealStatisticsDetail')}
+        />
       </View>
     );
   }
@@ -161,6 +165,7 @@ const BottomTabNavigator = createBottomTabNavigator(
     Statistics: TopStatisticsNavigator,
   },
   {
+    
     defaultNavigationOptions: ({ navigation }) => ({
       // BottomTabNavigator
       tabBarIcon:({focused,horizontal,tintColor})=>{
