@@ -48,7 +48,9 @@ class SleepTimerScreen extends React.Component {
 class StudyStatisticsHomeScreen extends React.Component {
   render() {
     return (
-      <StudyStatistics/>
+      <StudyStatistics
+        navigation={()=> this.props.navigation.push('StudyStatisticsDetail')}
+      />
     );
   }
 }

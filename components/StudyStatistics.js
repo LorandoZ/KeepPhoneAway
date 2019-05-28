@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, Button } from "react-native";
 import { Divider, ListItem, Icon } from 'react-native-elements';
 
 class ItemDivideComponent extends Component {
@@ -16,6 +16,7 @@ class StudyStatistics extends Component {
           data : [],
         }
     }
+
     componentDidMount(){
         fetch('http://134.209.3.61/Scientist')
           .then((response) => response.json())
@@ -32,9 +33,10 @@ class StudyStatistics extends Component {
         return(
             <ListItem
                 title={item.name}
+                titleStyle={styles.Classification}
                 leftIcon={<Icon
                     name=''
-                    type='font-awesome'
+                    type=''
                     color="gray"
                     />}
                 topDivider={true}
@@ -50,6 +52,10 @@ class StudyStatistics extends Component {
                         <Text style={styles.StatisticData}>Cards: x/n</Text>
                 </View>
                 <Divider style={{ height: 0.5,backgroundColor: 'dodgerblue' }} />
+                <Button
+                    title="Go to MealStatisticsDetail"
+                    onPress={this.props.navigation}
+                />
                 <FlatList
                     data={data}
                     renderItem={this.renderItem}
@@ -67,6 +73,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     StatisticData: {
+        flex: 1,
+        fontSize: 15,
+        textAlign: "center",
+    },
+    Classification: {
         flex: 1,
         fontSize: 20,
         textAlign: "center",
