@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, AsyncStorage } from "react-native";
-import { createStackNavigator, createAppContainer, createBottomTabNavigator, createMaterialTopTabNavigator } from "react-navigation";
+import { createStackNavigator, createAppContainer, createBottomTabNavigator, createMaterialTopTabNavigator, DeviceEventEmitter} from "react-navigation";
 import { Button, ThemeProvider,Icon } from 'react-native-elements';
-import StudyStatistics from "./components/StudyStatistics";
+import {StudyStatistics, StudyStatisticsDetail} from "./components/StudyStatistics";
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { FlatGrid } from 'react-native-super-grid';
 
@@ -49,7 +49,7 @@ class StudyStatisticsHomeScreen extends React.Component {
   render() {
     return (
       <StudyStatistics
-        navigation={()=> this.props.navigation.push('StudyStatisticsDetail')}
+        navigation={this.props.navigation}
       />
     );
   }
@@ -57,10 +57,11 @@ class StudyStatisticsHomeScreen extends React.Component {
 
 class StudyStatisticsDetailScreen extends React.Component {
   render() {
+    const uri = this.props.navigation.getParam('uri', '');
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>StudyStatisticsDetailScreen</Text>
-      </View>
+      <StudyStatisticsDetail
+        uri={uri}
+      />
     );
   }
 }

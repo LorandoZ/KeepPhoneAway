@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, Button } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, Button, DeviceEventEmitter
+} from "react-native";
 import { Divider, ListItem, Icon } from 'react-native-elements';
 
 class ItemDivideComponent extends Component {
@@ -29,17 +30,17 @@ class StudyStatistics extends Component {
             alert(error)
             );
     }
+
     renderItem = ({item}) => {
         return(
             <ListItem
                 title={item.name}
                 titleStyle={styles.Classification}
-                leftIcon={<Icon
-                    name=''
-                    type=''
-                    color="gray"
-                    />}
                 topDivider={true}
+                onPress={()=>{this.props.navigation.push('StudyStatisticsDetail',{
+                    uri:item.uri
+                    });
+                }}
             />
         )
     }
@@ -52,10 +53,7 @@ class StudyStatistics extends Component {
                         <Text style={styles.StatisticData}>Cards: x/n</Text>
                 </View>
                 <Divider style={{ height: 0.5,backgroundColor: 'dodgerblue' }} />
-                <Button
-                    title="Go to MealStatisticsDetail"
-                    onPress={this.props.navigation}
-                />
+                
                 <FlatList
                     data={data}
                     renderItem={this.renderItem}
@@ -64,6 +62,29 @@ class StudyStatistics extends Component {
         );
     }
 }
+
+class StudyStatisticsDetail extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          data : 'aaaaaaa',
+        }
+    }
+    componentDidMount(){
+        fetch(this.props.uri)
+    }
+    render() {
+        return (
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <Text>aaaaa</Text>
+            </View>
+        );
+    }
+}
+
+
+
+
 const styles = StyleSheet.create({
     StatisticsBar: {
         height: 30,
@@ -83,7 +104,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
 })
-export default StudyStatistics;
+export {StudyStatistics, StudyStatisticsDetail};
 
 
 [
