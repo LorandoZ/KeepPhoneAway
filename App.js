@@ -2,25 +2,17 @@ import React from "react";
 import { View, Text, AsyncStorage } from "react-native";
 import { createStackNavigator, createAppContainer, createBottomTabNavigator, createMaterialTopTabNavigator, DeviceEventEmitter} from "react-navigation";
 import { Button, ThemeProvider,Icon } from 'react-native-elements';
-import {StudyStatistics, StudyStatisticsDetail} from "./components/StudyStatistics";
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { FlatGrid } from 'react-native-super-grid';
+
+import { StudyStatistics, StudyStatisticsDetail} from "./components/StudyStatistics";
+import {StudyTimer} from "./components/StudyTimer";
 
 
 class StudyTimerScreen extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
-        <AnimatedCircularProgress
-          ref={(ref) => this.circularProgress = ref}
-          duration={80000}
-          size={300}
-          width={15}
-          fill={100}
-          tintColor="dodgerblue"
-          onAnimationComplete={() => console.log('onAnimationComplete')}
-          backgroundColor="gray"/>
-      </View>
+      <StudyTimer/>
     );
   }
 }
