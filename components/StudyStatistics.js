@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, Button, DeviceEventEmitter
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, Button, DeviceEventEmitter, Image, ScrollView,
 } from "react-native";
-import { Divider, ListItem, Icon } from 'react-native-elements';
+import { Divider, ListItem, Overlay } from 'react-native-elements';
+import { FlatGrid } from 'react-native-super-grid';
 
 class ItemDivideComponent extends Component {
     render() {
@@ -19,7 +20,7 @@ class StudyStatistics extends Component {
     }
 
     componentDidMount(){
-        fetch('http://134.209.3.61/Scientist')
+        fetch('http://134.209.3.61/Study/index')
           .then((response) => response.json())
           .then((data) => {
             this.setState({
@@ -38,7 +39,8 @@ class StudyStatistics extends Component {
                 titleStyle={styles.Classification}
                 topDivider={true}
                 onPress={()=>{this.props.navigation.push('StudyStatisticsDetail',{
-                    uri:item.uri
+                    name:item.name,
+                    url:item.url,
                     });
                 }}
             />
@@ -53,7 +55,6 @@ class StudyStatistics extends Component {
                         <Text style={styles.StatisticData}>Cards: x/n</Text>
                 </View>
                 <Divider style={{ height: 0.5,backgroundColor: 'dodgerblue' }} />
-                
                 <FlatList
                     data={data}
                     renderItem={this.renderItem}
@@ -67,23 +68,60 @@ class StudyStatisticsDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          data : 'aaaaaaa',
+          data : [],
+          isVisible : -1,
         }
     }
     componentDidMount(){
-        fetch(this.props.uri)
+        fetch(this.props.url)
+          .then((response) => response.json())
+          .then((data) => {
+            this.setState({
+                data : data
+            })
+          })
+          .catch(error =>
+            alert(error)
+            );
     }
+
     render() {
+        const data=[...this.state.data]
         return (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Text>aaaaa</Text>
-            </View>
+                <FlatGrid
+                    itemDimension={100}
+                    items={data}
+                    style={styles.gridView}
+
+                    renderItem={({ item, index }) => (
+                        <View style={[styles.itemContainer, { backgroundColor: 'dodgerblue' }]}>
+                            <TouchableOpacity      onPress={()=>{this.setState({ isVisible : index }) }}>
+                                <Image 
+                                    source={{uri : item.img}}
+                                    style={styles.itemImage} 
+                                />
+                                <Text style={styles.itemName}>{item.name}</Text>
+                            </TouchableOpacity>
+                            <Overlay isVisible={this.state.isVisible===index ? true:false} >
+                                <View style={styles.overlayContainer}>
+                                    <Image 
+                                        source={{uri : item.img}}
+                                        style={styles.overlayImage} 
+                                    />
+                                    <Text style={styles.overlayName}>{item.name}}</Text>
+                                    <Text>{item.intro}</Text>
+                                    <Button
+                                        title="Go Back"
+                                        onPress={()=>{this.setState({ isVisible : -1 }) }}
+                                    />
+                                </View>
+                            </Overlay>
+                        </View>
+                    )}
+                />
         );
     }
 }
-
-
-
 
 const styles = StyleSheet.create({
     StatisticsBar: {
@@ -103,6 +141,49 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: "center",
     },
+    gridView: {
+        marginTop: 20,
+        flex: 1,
+    },
+    itemContainer: {
+        justifyContent: "space-between",
+        alignItems: "center",
+        borderRadius: 10,
+        padding: 10,
+        marginVertical: 5,
+        marginHorizontal: 5,
+        height: 150,
+    },
+    itemName: {
+        fontSize: 16,
+        color: '#fff',
+        fontWeight: '600',
+        textAlign: "center",
+    },
+    itemImage: {
+        width: "95%",
+        height: "75%",
+      //  margin: 12,
+        borderRadius:12,
+    },
+    overlayContainer: {
+        justifyContent: "space-around",
+        alignItems: "center",
+        padding: 10,
+    },
+    overlayName: {
+        fontSize: 16,
+        color: '#fff',
+        fontWeight: '600',
+        textAlign: "center",
+    },
+    overlayImage: {
+        width: "40%",
+        height: "30%",
+      //  margin: 12,
+        borderRadius:12,
+    },
+    
 })
 export {StudyStatistics, StudyStatisticsDetail};
 
@@ -111,11 +192,11 @@ export {StudyStatistics, StudyStatisticsDetail};
     {
         "name": "Mathematician",
         "icon":"",
-        "url":"http://134.209.3.61/study/Mathematician"
+        "url":"http://134.209.3.61/Study/Mathematician"
     },
     {
         "name": "Physicist",
-        "url":"http://134.209.3.61/study/Physicist"
+        "url":"http://134.209.3.61/Study/Physicist"
     },
     {
         "name": "Astronomer",

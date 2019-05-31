@@ -57,10 +57,12 @@ class StudyStatisticsHomeScreen extends React.Component {
 
 class StudyStatisticsDetailScreen extends React.Component {
   render() {
-    const uri = this.props.navigation.getParam('uri', '');
+    const url = this.props.navigation.getParam('url', '');
+    const name = this.props.navigation.getParam('name', '');
     return (
       <StudyStatisticsDetail
-        uri={uri}
+        url={url}
+        name={name}
       />
     );
   }
