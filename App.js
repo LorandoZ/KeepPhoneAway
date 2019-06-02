@@ -13,7 +13,9 @@ import { MealTimer } from "./components/Timer/MealTimer";
 class StudyTimerScreen extends React.Component {
   render() {
     return (
-      <StudyTimer/>
+      <StudyTimer
+        navigation={this.props.navigation}
+      />
     );
   }
 }
@@ -21,7 +23,9 @@ class StudyTimerScreen extends React.Component {
 class MealTimerScreen extends React.Component {
   render() {
     return (
-      <MealTimer/>
+      <MealTimer
+        navigation={this.props.navigation}
+      />
     );
   }
 }

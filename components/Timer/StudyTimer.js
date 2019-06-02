@@ -20,6 +20,9 @@ class StudyTimer extends Component {
   }
   componentWillMount(){
     this._loadStudyPoints()
+    this._navListener = this.props.navigation.addListener('didFocus', () => {
+      this._loadStudyPoints()
+    })
   }
 
   _loadStudyPoints = async () => {
@@ -130,6 +133,7 @@ class StudyTimer extends Component {
 
   componentWillUnmount(){
     this.timer&&clearInterval(this.timer)
+    this._navListener.remove();
     this.setState({
       fill:1,
       isDisabled:false,

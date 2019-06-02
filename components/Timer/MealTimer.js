@@ -20,6 +20,9 @@ class MealTimer extends Component {
   }
   componentWillMount(){
     this._loadMealPoints()
+    this._navListener = this.props.navigation.addListener('didFocus', () => {
+      this._loadMealPoints()
+    })
   }
 
   _loadMealPoints = async () => {
@@ -129,6 +132,7 @@ class MealTimer extends Component {
   }
 
   componentWillUnmount(){
+    this._navListener.remove()
     this.timer&&clearInterval(this.timer)
     this.setState({
       fill:1,
