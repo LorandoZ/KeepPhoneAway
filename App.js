@@ -6,7 +6,7 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { FlatGrid } from 'react-native-super-grid';
 
 import { StudyStatistics, StudyStatisticsDetail} from "./components/StudyStatistics";
-import {StudyTimer} from "./components/StudyTimer";
+import {StudyTimer} from "./components/Timer/StudyTimer";
 
 
 class StudyTimerScreen extends React.Component {
