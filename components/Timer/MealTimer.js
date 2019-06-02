@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { View, Text, AsyncStorage,Easing, Alert } from "react-native";
+import { View, Text, AsyncStorage,Easing, Alert, AppState } from "react-native";
 import { Button,Icon } from 'react-native-elements';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import DatePicker from 'react-native-datepicker'
+import KeepAwake from 'react-native-keep-awake';
 
 class MealTimer extends Component {
   constructor(props){
@@ -18,10 +19,29 @@ class MealTimer extends Component {
       Temp:0,
     }
   }
+
+  _resetCircularProgress=()=>{
+    KeepAwake.deactivate()
+    this.timer&&clearInterval(this.timer)
+    if(this.state.isDisabled==true){
+      this.setState({
+        isDisabled:false,
+        display_hour:0,
+        display_min:0,
+        display_sec:0,
+        time:'00:10',
+        Temp:0
+      })
+      this.refs.circularProgress.reAnimate(0,0)
+    }
+  }
+
   componentWillMount(){
     this._loadMealPoints()
+    AppState.addEventListener('change',this._resetCircularProgress)
     this._navListener = this.props.navigation.addListener('didFocus', () => {
       this._loadMealPoints()
+      this._resetCircularProgress()
     })
   }
 
@@ -52,6 +72,7 @@ class MealTimer extends Component {
   }
 
   Timerbegin=()=>{
+    KeepAwake.activate()
     let sec=0
     let a=this.state.time
     sec+=(a[0]-'0')*36000000
@@ -66,7 +87,10 @@ class MealTimer extends Component {
       isDisabled:true,
       Temp:1
     })
-
+    if(sec/1000<300){
+      this.setState({Temp:0})
+      Alert.alert("Time is too short to have a meal. You will not get points")
+    }
     this.refs.circularProgress.animate(100,sec,Easing.linear)
     this.timer=setInterval(()=>{
       if(!this.timer)return;
@@ -117,33 +141,16 @@ class MealTimer extends Component {
 
   onComplete=()=>{
     this._saveMealPoints()
-    this.timer&&clearInterval(this.timer)
-    if(this.state.isDisabled==true){
-      this.setState({
-        fill:1,
-        isDisabled:false,
-        display_hour:0,
-        display_min:0,
-        display_sec:0,
-        time:'00:10'
-      })
-      this.setState({fill:0})
-    }
+    this._resetCircularProgress()
   }
 
   componentWillUnmount(){
+    this._resetCircularProgress()
+    AppState.removeEventListener('change',this._resetCircularProgress)
     this._navListener.remove()
-    this.timer&&clearInterval(this.timer)
-    this.setState({
-      fill:1,
-      isDisabled:false,
-      display_hour:0,
-      display_min:0,
-      display_sec:0,
-      time:'00:10'
-    })
-    this.setState({fill:0})
   }
+
+  AppState
 
   render() {
       return (

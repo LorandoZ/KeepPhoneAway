@@ -3,6 +3,7 @@ import { View, Text, AsyncStorage,Easing, Alert } from "react-native";
 import { Button,Icon } from 'react-native-elements';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import DatePicker from 'react-native-datepicker'
+import KeepAwake from 'react-native-keep-awake';
 
 class StudyTimer extends Component {
   constructor(props){
@@ -18,10 +19,28 @@ class StudyTimer extends Component {
       Temp:0,
     }
   }
+
+  _resetCircularProgress=()=>{
+    KeepAwake.deactivate()
+    this.timer&&clearInterval(this.timer)
+    if(this.state.isDisabled==true){
+      this.setState({
+        isDisabled:false,
+        display_hour:0,
+        display_min:0,
+        display_sec:0,
+        time:'00:25',
+        Temp:0
+      })
+      this.refs.circularProgress.reAnimate(0,0)
+    }
+  }
+
   componentWillMount(){
     this._loadStudyPoints()
-    this._navListener = this.props.navigation.addListener('didFocus', () => {
+    this._navListener = this.props.navigation.addListener('willFocus', () => {
       this._loadStudyPoints()
+      this._resetCircularProgress()
     })
   }
 
@@ -52,6 +71,7 @@ class StudyTimer extends Component {
   }
 
   Timerbegin=()=>{
+    KeepAwake.activate()
     let sec=0
     let a=this.state.time
     sec+=(a[0]-'0')*36000000
@@ -117,32 +137,12 @@ class StudyTimer extends Component {
 
   onComplete=()=>{
     this._saveStudyPoints()
-    this.timer&&clearInterval(this.timer)
-    if(this.state.isDisabled==true){
-      this.setState({
-        fill:1,
-        isDisabled:false,
-        display_hour:0,
-        display_min:0,
-        display_sec:0,
-        time:'00:25'
-      })
-      this.setState({fill:0})
-    }
+    this._resetCircularProgress()
   }
 
   componentWillUnmount(){
-    this.timer&&clearInterval(this.timer)
+    this._resetCircularProgress()
     this._navListener.remove();
-    this.setState({
-      fill:1,
-      isDisabled:false,
-      display_hour:0,
-      display_min:0,
-      display_sec:0,
-      time:'00:25'
-    })
-    this.setState({fill:0})
   }
 
   render() {
