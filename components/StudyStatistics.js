@@ -185,7 +185,7 @@ class StudyStatisticsDetail extends Component {
                                 <Text style={styles.itemName}>{item.name}</Text>
                             </TouchableOpacity>
                             :<TouchableOpacity   
-                                style={[styles.itemContainer, { backgroundColor: 'dodgerblue' }]}
+                                style={[styles.itemContainer, { backgroundColor: '#144a74' }]}
                                 onPress={()=>{this.setState({ isVisible : index }); this._loadStudyPoints()}}
                             >
                                 <Image 
@@ -277,8 +277,9 @@ const styles = StyleSheet.create({
     itemContainer: {
         justifyContent: "space-between",
         alignItems: "center",
-        borderRadius: 10,
+        borderRadius: 8,
         padding: 10,
+        paddingTop:11,
         marginVertical: 5,
         marginHorizontal: 5,
         height: 150,
@@ -293,7 +294,7 @@ const styles = StyleSheet.create({
         width: "95%",
         height: "75%",
       //  margin: 12,
-        borderRadius:12,
+        borderRadius:8,
     },
     overlayContainer: {
         justifyContent: "space-around",
@@ -314,7 +315,7 @@ const styles = StyleSheet.create({
         width: "60%",
         height: "40%",
       //  margin: 12,
-        borderRadius:12,
+        borderRadius:8,
     },
     overlayName: {
         fontSize: 30,
@@ -324,9 +325,10 @@ const styles = StyleSheet.create({
     },
     overlayIntro: {
         fontSize: 16,
+        // textBreakStrategy:'highQuality',
     //    color: '#fff',
     //    fontWeight: '600',
-        textAlign: "center",
+        // textAlign: "center",
     },
     
     
