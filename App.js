@@ -6,7 +6,8 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { FlatGrid } from 'react-native-super-grid';
 
 import { StudyStatistics, StudyStatisticsDetail} from "./components/StudyStatistics";
-import {StudyTimer} from "./components/Timer/StudyTimer";
+import { StudyTimer } from "./components/Timer/StudyTimer";
+import { MealTimer } from "./components/Timer/MealTimer";
 
 
 class StudyTimerScreen extends React.Component {
@@ -20,9 +21,7 @@ class StudyTimerScreen extends React.Component {
 class MealTimerScreen extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>MealTimerScreen</Text>
-      </View>
+      <MealTimer/>
     );
   }
 }
@@ -186,4 +185,6 @@ const BottomTabNavigator = createBottomTabNavigator(
   }
 );
 
+// Disable Warning, just temporary
+console.disableYellowBox = true;
 export default createAppContainer(BottomTabNavigator);

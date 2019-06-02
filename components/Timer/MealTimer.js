@@ -4,45 +4,45 @@ import { Button,Icon } from 'react-native-elements';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import DatePicker from 'react-native-datepicker'
 
-class StudyTimer extends Component {
+class MealTimer extends Component {
   constructor(props){
     super(props);
     this.state={
-      time:'00:25',
+      time:'00:10',
       isDisabled: false,
       fill:0,
       display_hour:0,
       display_min:0,
       display_sec:0,
-      StudyPoints:0,
+      MealPoints:0,
       Temp:0,
     }
   }
   componentWillMount(){
-    this._loadStudyPoints()
+    this._loadMealPoints()
   }
 
-  _loadStudyPoints = async () => {
+  _loadMealPoints = async () => {
     try{
       let value_str=""
-      value_str = await AsyncStorage.getItem('StudyPoints');
+      value_str = await AsyncStorage.getItem('MealPoints');
       if(value_str==null){
-        await AsyncStorage.setItem('StudyPoints','0');
+        await AsyncStorage.setItem('MealPoints','0');
         value_str='0'
       }
       let value=parseInt(value_str)
-      this.setState({StudyPoints:value})
+      this.setState({MealPoints:value})
     }catch(error){
       Alert.alert(error)
     }
   }
 
-  _saveStudyPoints = async () =>{
+  _saveMealPoints = async () =>{
     try{
-      let value=this.state.StudyPoints+this.state.Temp
+      let value=this.state.MealPoints+this.state.Temp
       let value_str=value.toString()
-      await AsyncStorage.setItem('StudyPoints', value_str);
-      this.setState({StudyPoints:value,Temp:0})
+      await AsyncStorage.setItem('MealPoints', value_str);
+      this.setState({MealPoints:value,Temp:0})
     }catch(error){
       Alert.alert(error)
     }
@@ -61,7 +61,7 @@ class StudyTimer extends Component {
       display_min:(a[3]-'0')*10+(a[4]-'0'),
       display_sec:0,
       isDisabled:true,
-      Temp:sec/60000
+      Temp:1
     })
 
     this.refs.circularProgress.animate(100,sec,Easing.linear)
@@ -113,7 +113,7 @@ class StudyTimer extends Component {
   }
 
   onComplete=()=>{
-    this._saveStudyPoints()
+    this._saveMealPoints()
     this.timer&&clearInterval(this.timer)
     if(this.state.isDisabled==true){
       this.setState({
@@ -122,7 +122,7 @@ class StudyTimer extends Component {
         display_hour:0,
         display_min:0,
         display_sec:0,
-        time:'00:25'
+        time:'00:10'
       })
       this.setState({fill:0})
     }
@@ -136,7 +136,7 @@ class StudyTimer extends Component {
       display_hour:0,
       display_min:0,
       display_sec:0,
-      time:'00:25'
+      time:'00:10'
     })
     this.setState({fill:0})
   }
@@ -145,7 +145,7 @@ class StudyTimer extends Component {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
         <Text style={{fontSize:20}}>
-          Points: {this.state.StudyPoints.toString()}
+          Points: {this.state.MealPoints.toString()}
         </Text>
         <Text></Text>
         <Text></Text>
@@ -172,4 +172,4 @@ class StudyTimer extends Component {
     }
   }
 
-  export {StudyTimer}
+  export {MealTimer}
