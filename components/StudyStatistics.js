@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, Button, DeviceEventEmitter, Image, ScrollView,
-} from "react-native";
+import { View, Text, StyleSheet, AsyncStorage, TouchableOpacity, FlatList, Button, Image, ScrollView } from "react-native";
 import { Divider, ListItem, Overlay } from 'react-native-elements';
 import { FlatGrid } from 'react-native-super-grid';
 
@@ -18,7 +17,6 @@ class StudyStatistics extends Component {
           data : [],
         }
     }
-
     componentDidMount(){
         fetch('http://134.209.3.61/Study/index')
           .then((response) => response.json())
@@ -31,7 +29,6 @@ class StudyStatistics extends Component {
             alert(error)
             );
     }
-
     renderItem = ({item}) => {
         return(
             <ListItem
@@ -63,13 +60,15 @@ class StudyStatistics extends Component {
         );
     }
 }
-
 class StudyStatisticsDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
           data : [],
+          status : [],
           isVisible : -1,
+          StudyPoints: 0,
+          RequiredPoints: 1,
         }
     }
     componentDidMount(){
@@ -80,49 +79,179 @@ class StudyStatisticsDetail extends Component {
                 data : data
             })
           })
+          .then(()=>{  //初始化状态
+            let status = []
+            for(let i=0;i<this.state.data.length;i++){
+                status.push('0')
+                this._retrieveData(this.state.data[i].name)
+            }
+            this.setState({status : status})
+            this._loadStudyPoints()
+          })
           .catch(error =>
             alert(error)
-            );
+            );        
     }
-
+    _storeData = async (id,data) => {
+        try {
+            await AsyncStorage.setItem(id,data)
+            this._retrieveData(id)
+        } catch (error) {
+            alert(error)
+        }
+    }
+    _retrieveData = async (id) => {
+        try {
+            var value = await AsyncStorage.getItem(id)
+            if (value == null) {
+                await AsyncStorage.setItem(id,'0')
+            }
+            else{
+                let status=this.state.status
+                for(let i=0;i<this.state.data.length;i++)
+                    if(id==this.state.data[i].name){
+                        status[i]=value
+                        break
+                    }
+                this.setState({status : status})      
+            }
+        } catch (error) {
+            alert(error)
+        }         
+    }
+    _loadStudyPoints = async () => {
+        try{
+            let value_str=""
+            value_str = await AsyncStorage.getItem('StudyPoints');
+            if(value_str==null){
+                await AsyncStorage.setItem('StudyPoints','0');
+                value_str='0'
+            }
+            let value=parseInt(value_str)
+            this.setState({StudyPoints:value})
+        }catch(error){
+            Alert.alert(error)
+        }
+    }
+    _reduceStudyPoints = async (PointsNeed) =>{
+        try{
+            let value=this.state.StudyPoints-PointsNeed
+            let value_str=value.toString()
+            await AsyncStorage.setItem('StudyPoints', value_str);
+            this.setState({StudyPoints:value})
+        }catch(error){
+            Alert.alert(error)
+        }
+    }
+    _addStudyPoints = async (PointsNeed) =>{
+        try{
+            let value=this.state.StudyPoints+PointsNeed
+            let value_str=value.toString()
+            await AsyncStorage.setItem('StudyPoints', value_str);
+            this.setState({StudyPoints:value})
+        }catch(error){
+            Alert.alert(error)
+        }
+    }
+    unlock = (name) => {
+        let CurrentPoints=this.state.StudyPoints
+        let RequiredPoints=this.state.RequiredPoints
+        if(CurrentPoints >= RequiredPoints){
+            this._reduceStudyPoints(this.state.RequiredPoints)
+            this._storeData(name,'1')
+        }
+        else{
+            alert('lack of points')
+        }       
+    }
     render() {
         const data=[...this.state.data]
         return (
-                <FlatGrid
-                    itemDimension={100}
-                    items={data}
-                    style={styles.gridView}
-
-                    renderItem={({ item, index }) => (
-                        <View style={[styles.itemContainer, { backgroundColor: 'dodgerblue' }]}>
-                            <TouchableOpacity      onPress={()=>{this.setState({ isVisible : index }) }}>
+            <FlatGrid
+                itemDimension={120}
+                items={data}
+                style={styles.gridView}
+                renderItem={({ item, index }) => (
+                    <View>
+                        {this.state.status[index]==='0' ? 
+                            <TouchableOpacity   
+                                style={[styles.itemContainer, { backgroundColor: 'black' }]}
+                                onPress={()=>{this.setState({ isVisible : index }); this._loadStudyPoints()}}
+                            >
+                                <Image 
+                                    source={{uri : 'http://134.209.3.61/Mark.jpg'}}
+                                    style={styles.itemImage} 
+                                />
+                                <Text style={styles.itemName}>{item.name}</Text>
+                            </TouchableOpacity>
+                            :<TouchableOpacity   
+                                style={[styles.itemContainer, { backgroundColor: 'dodgerblue' }]}
+                                onPress={()=>{this.setState({ isVisible : index }); this._loadStudyPoints()}}
+                            >
                                 <Image 
                                     source={{uri : item.img}}
                                     style={styles.itemImage} 
                                 />
                                 <Text style={styles.itemName}>{item.name}</Text>
                             </TouchableOpacity>
-                            <Overlay isVisible={this.state.isVisible===index ? true:false} >
+                        
+                        }
+                        <Overlay isVisible={this.state.isVisible===index ? true:false} >
+                            {this.state.status[index]==='0' ? 
                                 <View style={styles.overlayContainer}>
+                                    <View style={{ paddingLeft: '90%', height:'7%' }}>
+                                        <TouchableOpacity   
+                                            style={{backgroundColor: '' }}
+                                            onPress={()=>{this.setState({ isVisible : -1 }) }}
+                                        >
+                                            <Text style={{ fontSize: 30}}> × </Text>
+                                        </TouchableOpacity>
+                                    </View>
+
+                                    <Image 
+                                        source={{uri : 'http://134.209.3.61/Mark.jpg'}}
+                                        style={styles.overlayImage} 
+                                    />
+                                    <Text style={styles.overlayName}>???</Text>
+                                    <ScrollView>
+                                        <Text style={styles.overlayIntro}>Required Points : {this.state.RequiredPoints}  Current Points : {this.state.StudyPoints}</Text> 
+                                    </ScrollView>
+                                    <Button
+                                        title="+1"
+                                        onPress={()=>{this._addStudyPoints(1)}}
+                                    />
+                                    <Button
+                                        title="UNLOCK"
+                                        onPress={()=>{this.unlock(item.name)}}
+                                    />
+                                </View>
+                                :<View style={styles.overlayContainer}>
+                                    <View style={{ paddingLeft: '90%', height:'7%' }}>
+                                        <TouchableOpacity   
+                                            style={{backgroundColor: '' }}
+                                            onPress={()=>{this.setState({ isVisible : -1 }) }}
+                                        >
+                                            <Text style={{ fontSize: 30}}> × </Text>
+                                        </TouchableOpacity>
+                                    </View>
+
                                     <Image 
                                         source={{uri : item.img}}
                                         style={styles.overlayImage} 
                                     />
-                                    <Text style={styles.overlayName}>{item.name}}</Text>
-                                    <Text>{item.intro}</Text>
-                                    <Button
-                                        title="Go Back"
-                                        onPress={()=>{this.setState({ isVisible : -1 }) }}
-                                    />
+                                    <Text style={styles.overlayName}>{item.name}</Text>
+                                    <ScrollView>
+                                        <Text style={styles.overlayIntro}>{item.intro}</Text>
+                                    </ScrollView>
                                 </View>
-                            </Overlay>
-                        </View>
-                    )}
-                />
+                            }
+                        </Overlay>
+                    </View>
+                )}
+            />
         );
     }
 }
-
 const styles = StyleSheet.create({
     StatisticsBar: {
         height: 30,
@@ -155,7 +284,7 @@ const styles = StyleSheet.create({
         height: 150,
     },
     itemName: {
-        fontSize: 16,
+        fontSize: 14,
         color: '#fff',
         fontWeight: '600',
         textAlign: "center",
@@ -169,20 +298,37 @@ const styles = StyleSheet.create({
     overlayContainer: {
         justifyContent: "space-around",
         alignItems: "center",
-        padding: 10,
+        paddingHorizontal: '5%',
+        paddingTop: '0%',
+        paddingBottom: '5%',
+        height:"100%",
+        width:"100%",
     },
-    overlayName: {
-        fontSize: 16,
-        color: '#fff',
-        fontWeight: '600',
-        textAlign: "center",
+    ScrollViewContainer: {
+        justifyContent: "space-around",
+        alignItems: "center",
+        height:"100%",
+        width:"100%",
     },
     overlayImage: {
-        width: "40%",
-        height: "30%",
+        width: "60%",
+        height: "40%",
       //  margin: 12,
         borderRadius:12,
     },
+    overlayName: {
+        fontSize: 30,
+    //    color: '#fff',
+        fontWeight: '600',
+        textAlign: "center",
+    },
+    overlayIntro: {
+        fontSize: 16,
+    //    color: '#fff',
+    //    fontWeight: '600',
+        textAlign: "center",
+    },
+    
     
 })
 export {StudyStatistics, StudyStatisticsDetail};
