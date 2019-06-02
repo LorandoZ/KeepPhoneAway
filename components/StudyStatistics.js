@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, AsyncStorage, TouchableOpacity, FlatList, Button, Image, ScrollView } from "react-native";
+import { View, Text, StyleSheet, AsyncStorage, TouchableOpacity, FlatList, Button, Image, ScrollView, Alert } from "react-native";
 import { Divider, ListItem, Overlay } from 'react-native-elements';
 import { FlatGrid } from 'react-native-super-grid';
 
@@ -15,6 +15,7 @@ class StudyStatistics extends Component {
         super(props);
         this.state = {
           data : [],
+          StudyPoints: 0,
         }
     }
     componentDidMount(){
@@ -28,11 +29,29 @@ class StudyStatistics extends Component {
           .catch(error =>
             alert(error)
             );
+        this._navListener = this.props.navigation.addListener('willFocus', () => {
+            this._loadStudyPoints()
+            })
     }
+    _loadStudyPoints = async () => {
+        try{
+          let value_str=""
+          value_str = await AsyncStorage.getItem('StudyPoints');
+          if(value_str==null){
+            await AsyncStorage.setItem('StudyPoints','0');
+            value_str='0'
+          }
+          let value=parseInt(value_str)
+          this.setState({StudyPoints:value})
+        }catch(error){
+          Alert.alert(error)
+        }
+      }
     renderItem = ({item}) => {
         return(
             <ListItem
                 title={item.name}
+                rightElement={">     "}
                 titleStyle={styles.Classification}
                 topDivider={true}
                 onPress={()=>{this.props.navigation.push('StudyStatisticsDetail',{
@@ -43,13 +62,15 @@ class StudyStatistics extends Component {
             />
         )
     }
+    componentWillUnmount(){
+        this._resetCircularProgress()
+    }
     render() {
         const data=[...this.state.data]
         return (
             <View>
                 <View style={styles.StatisticsBar}>
-                        <Text style={styles.StatisticData}>Total Time: xxx</Text>
-                        <Text style={styles.StatisticData}>Cards: x/n</Text>
+                        <Text style={styles.StatisticData}>StudyPoints: {this.state.StudyPoints}</Text>
                 </View>
                 <Divider style={{ height: 0.5,backgroundColor: 'dodgerblue' }} />
                 <FlatList
@@ -68,7 +89,7 @@ class StudyStatisticsDetail extends Component {
           status : [],
           isVisible : -1,
           StudyPoints: 0,
-          RequiredPoints: 1,
+          RequiredPoints: 100,
         }
     }
     componentDidMount(){
@@ -161,7 +182,7 @@ class StudyStatisticsDetail extends Component {
             this._storeData(name,'1')
         }
         else{
-            alert('lack of points')
+            Alert.alert('lack of points!')
         }       
     }
     render() {
@@ -194,7 +215,6 @@ class StudyStatisticsDetail extends Component {
                                 />
                                 <Text style={styles.itemName}>{item.name}</Text>
                             </TouchableOpacity>
-                        
                         }
                         <Overlay isVisible={this.state.isVisible===index ? true:false} >
                             {this.state.status[index]==='0' ? 
@@ -207,21 +227,20 @@ class StudyStatisticsDetail extends Component {
                                             <Text style={{ fontSize: 30}}> × </Text>
                                         </TouchableOpacity>
                                     </View>
-
                                     <Image 
                                         source={{uri : 'http://134.209.3.61/Mark.jpg'}}
                                         style={styles.overlayImage} 
                                     />
-                                    <Text style={styles.overlayName}>???</Text>
+                                    <Text style={styles.overlayName}>{item.name}</Text>
                                     <ScrollView>
-                                        <Text style={styles.overlayIntro}>Required Points : {this.state.RequiredPoints}  Current Points : {this.state.StudyPoints}</Text> 
+                                        <Text style={styles.overlayPoints}>Required Points: {this.state.RequiredPoints}/{this.state.StudyPoints}</Text> 
                                     </ScrollView>
                                     <Button
                                         title="+1"
                                         onPress={()=>{this._addStudyPoints(1)}}
                                     />
                                     <Button
-                                        title="UNLOCK"
+                                        title="     UNLOCK     "
                                         onPress={()=>{this.unlock(item.name)}}
                                     />
                                 </View>
@@ -234,12 +253,12 @@ class StudyStatisticsDetail extends Component {
                                             <Text style={{ fontSize: 30}}> × </Text>
                                         </TouchableOpacity>
                                     </View>
-
                                     <Image 
                                         source={{uri : item.img}}
                                         style={styles.overlayImage} 
                                     />
                                     <Text style={styles.overlayName}>{item.name}</Text>
+                                    <Text > </Text>
                                     <ScrollView>
                                         <Text style={styles.overlayIntro}>{item.intro}</Text>
                                     </ScrollView>
@@ -268,10 +287,11 @@ const styles = StyleSheet.create({
     Classification: {
         flex: 1,
         fontSize: 20,
-        textAlign: "center",
+        textAlign: "left",
+        paddingLeft:20,
     },
     gridView: {
-        marginTop: 20,
+    //    marginTop: 20,
         flex: 1,
     },
     itemContainer: {
@@ -292,7 +312,7 @@ const styles = StyleSheet.create({
     },
     itemImage: {
         width: "95%",
-        height: "75%",
+        height: "80%",
       //  margin: 12,
         borderRadius:8,
     },
@@ -329,6 +349,13 @@ const styles = StyleSheet.create({
     //    color: '#fff',
     //    fontWeight: '600',
         // textAlign: "center",
+    },
+    overlayPoints: {
+        fontSize: 24,
+        // textBreakStrategy:'highQuality',
+        color: 'red',
+        fontWeight: '600',
+         textAlign: "center",
     },
     
     
