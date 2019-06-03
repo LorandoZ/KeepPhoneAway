@@ -5,7 +5,9 @@ import { Button, ThemeProvider,Icon } from 'react-native-elements';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { FlatGrid } from 'react-native-super-grid';
 
-import { StudyStatistics, StudyStatisticsDetail} from "./components/StudyStatistics";
+import { StudyStatistics, StudyStatisticsDetail} from "./components/Statistics/StudyStatistics";
+import { SleepStatistics, SleepStatisticsDetail} from "./components/Statistics/SleepStatistics";
+import { MealStatistics, MealStatisticsDetail} from "./components/Statistics/MealStatistics";
 import { StudyTimer } from "./components/Timer/StudyTimer";
 import { MealTimer } from "./components/Timer/MealTimer";
 
@@ -66,22 +68,22 @@ class StudyStatisticsDetailScreen extends React.Component {
 class MealStatisticsHomeScreen extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Button
-          title="Go to MealStatisticsDetail"
-          onPress={() => this.props.navigation.push('MealStatisticsDetail')}
-        />
-      </View>
+      <MealStatistics
+        navigation={this.props.navigation}
+      />
     );
   }
 }
 
 class MealStatisticsDetailScreen extends React.Component {
   render() {
+    const url = this.props.navigation.getParam('url', '');
+    const name = this.props.navigation.getParam('name', '');
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>MealStatisticsDetailScreen</Text>
-      </View>
+      <MealStatisticsDetail
+        url={url}
+        name={name}
+      />
     );
   }
 }
@@ -89,19 +91,22 @@ class MealStatisticsDetailScreen extends React.Component {
 class SleepStatisticsHomeScreen extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>SleepStatisticsHomeScreen</Text>
-      </View>
+      <SleepStatistics
+        navigation={this.props.navigation}
+      />
     );
   }
 }
 
 class SleepStatisticsDetailScreen extends React.Component {
   render() {
+    const url = this.props.navigation.getParam('url', '');
+    const name = this.props.navigation.getParam('name', '');
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>SleepStatisticsDetailScreen</Text>
-      </View>
+      <SleepStatisticsDetail
+        url={url}
+        name={name}
+      />
     );
   }
 }
