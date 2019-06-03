@@ -2,13 +2,11 @@ import React from "react";
 import { View, Text, AsyncStorage } from "react-native";
 import { createStackNavigator, createAppContainer, createBottomTabNavigator, createMaterialTopTabNavigator, DeviceEventEmitter} from "react-navigation";
 import { Button, ThemeProvider,Icon } from 'react-native-elements';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import { FlatGrid } from 'react-native-super-grid';
 
 import { StudyStatistics, StudyStatisticsDetail} from "./components/StudyStatistics";
 import { StudyTimer } from "./components/Timer/StudyTimer";
 import { MealTimer } from "./components/Timer/MealTimer";
-
+import { SleepTimer,SleepTimerSetting } from "./components/Timer/SleepTimer";
 
 class StudyTimerScreen extends React.Component {
   render() {
@@ -33,10 +31,20 @@ class MealTimerScreen extends React.Component {
 class SleepTimerScreen extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>SleepTimerScreen</Text>
-      </View>
+      <SleepTimer
+        navigation={this.props.navigation}
+      />
     );
+  }
+}
+
+class SleepTimerSettingScreen extends React.Component {
+  render(){
+    return(
+      <SleepTimerSetting
+        navigation={this.props.navigation}
+      />
+    )
   }
 }
 
@@ -106,14 +114,27 @@ class SleepStatisticsDetailScreen extends React.Component {
   }
 }
 
+
+const SleepTimerStackScreen = createStackNavigator(
+  {
+    SleepTimer: SleepTimerScreen,
+    SleepTimerSetting: SleepTimerSettingScreen,
+  },
+  {
+    initialRouteName: "SleepTimer",
+    headerMode: "none"
+  }
+);
+
 // Timer Navigator
 const TopTimerNavigator = createMaterialTopTabNavigator(
   {
     Study: StudyTimerScreen,
     Meal: MealTimerScreen,
-    Sleep: SleepTimerScreen,
+    Sleep: SleepTimerStackScreen,
   }
 );
+
 
 const StudyStatisticsStackScreen = createStackNavigator(
   {
