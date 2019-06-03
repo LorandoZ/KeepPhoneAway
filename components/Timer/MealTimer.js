@@ -149,9 +149,7 @@ class MealTimer extends Component {
     AppState.removeEventListener('change',this._resetCircularProgress)
     this._navListener.remove()
   }
-
-  AppState
-
+  
   render() {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
