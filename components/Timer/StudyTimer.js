@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, AsyncStorage,Easing, Alert } from "react-native";
+import { View, Text, AsyncStorage,Easing, Alert, AppState, Vibration } from "react-native";
 import { Button,Icon } from 'react-native-elements';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import DatePicker from 'react-native-datepicker'
@@ -136,6 +136,8 @@ class StudyTimer extends Component {
   }
 
   onComplete=()=>{
+    this.state.isDisabled&&Alert.alert("Finished, you got "+this.state.Temp+" points")
+    this.state.isDisabled&&Vibration.vibrate(1000)
     this._saveStudyPoints()
     this._resetCircularProgress()
   }
