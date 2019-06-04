@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, AsyncStorage, TouchableOpacity, FlatList, Butto
 import { Divider, ListItem, Overlay } from 'react-native-elements';
 import { FlatGrid } from 'react-native-super-grid';
 
+import { TheOverlay } from "./Stateless";
+
 class ItemDivideComponent extends Component {
     render() {
       return (
@@ -185,6 +187,9 @@ class MealStatisticsDetail extends Component {
             Alert.alert('lack of points!')
         }       
     }
+    closeOverlay = (name) => {
+        this.setState({ isVisible : -1 })     
+    }
     render() {
         const data=[...this.state.data]
         return (
@@ -218,51 +223,22 @@ class MealStatisticsDetail extends Component {
                         }
                         <Overlay isVisible={this.state.isVisible===index ? true:false} >
                             {this.state.status[index]==='0' ? 
-                                <View style={styles.overlayContainer}>
-                                    <View style={{ paddingLeft: '90%', height:'7%' }}>
-                                        <TouchableOpacity   
-                                            style={{backgroundColor: '' }}
-                                            onPress={()=>{this.setState({ isVisible : -1 }) }}
-                                        >
-                                            <Text style={{ fontSize: 30}}> × </Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                    <Image 
-                                        source={{uri : 'http://134.209.3.61/Mark.jpg'}}
-                                        style={styles.overlayImage} 
-                                    />
-                                    <Text style={styles.overlayName}>{item.name}</Text>
-                                    <ScrollView>
-                                        <Text style={styles.overlayPoints}>Required Points: {this.state.RequiredPoints}/{this.state.MealPoints}</Text> 
-                                    </ScrollView>
-                                    <Button
-                                        title="+500"
-                                        onPress={()=>{this._addMealPoints(500)}}
-                                    />
-                                    <Button
-                                        title="     UNLOCK     "
-                                        onPress={()=>{this.unlock(item.name)}}
-                                    />
-                                </View>
-                                :<View style={styles.overlayContainer}>
-                                    <View style={{ paddingLeft: '90%', height:'7%' }}>
-                                        <TouchableOpacity   
-                                            style={{backgroundColor: '' }}
-                                            onPress={()=>{this.setState({ isVisible : -1 }) }}
-                                        >
-                                            <Text style={{ fontSize: 30}}> × </Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                    <Image 
-                                        source={{uri : item.img}}
-                                        style={styles.overlayImage} 
-                                    />
-                                    <Text style={styles.overlayName}>{item.name}</Text>
-                                    <Text > </Text>
-                                    <ScrollView>
-                                        <Text style={styles.overlayIntro}>{item.intro}</Text>
-                                    </ScrollView>
-                                </View>
+                                <TheOverlay
+                                FS={0}
+                                name={item.name}
+                                RequiredPoints={this.state.RequiredPoints}
+                                Points={this.state.MealPoints}
+                                _addPoints={this._addMealPoints}
+                                unlock={this.unlock}     
+                                closeOverlay={this.closeOverlay}                          
+                            />
+                            :<TheOverlay
+                                FS={1}
+                                name={item.name}
+                                img={item.img}
+                                intro={item.intro}
+                                closeOverlay={this.closeOverlay}                          
+                            />
                             }
                         </Overlay>
                     </View>
