@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
         height: 130,
     },
     itemName: {
-        fontSize: 14,
+        fontSize: 12,
         color: '#fff',
         fontWeight: '600',
         textAlign: "center",

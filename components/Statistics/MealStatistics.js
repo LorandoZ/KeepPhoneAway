@@ -191,7 +191,7 @@ class MealStatisticsDetail extends Component {
                                     source={{uri : 'http://134.209.3.61/Mark.jpg'}}
                                     style={styles.itemImage} 
                                 />
-                                <Text style={styles.itemName}>{item.name}</Text>
+                                <Text style={[styles.itemName,{color: 'white'}]}>{item.name}</Text>
                             </TouchableOpacity>
                             :<TouchableOpacity   
                                 style={[styles.itemContainer, { backgroundColor: 'white' }]}
@@ -201,7 +201,7 @@ class MealStatisticsDetail extends Component {
                                     source={{uri : item.img}}
                                     style={styles.itemImage} 
                                 />
-                                <Text style={styles.itemName}>{item.name}</Text>
+                                <Text style={[styles.itemName,{color: 'black'}]}>{item.name}</Text>
                             </TouchableOpacity>
                         }
                         <Overlay isVisible={this.state.isVisible===index ? true:false} >
@@ -262,8 +262,7 @@ const styles = StyleSheet.create({
         height: 130,
     },
     itemName: {
-        fontSize: 14,
-        color: 'black',
+        fontSize: 12,
         fontWeight: '600',
         textAlign: "center",
     },
