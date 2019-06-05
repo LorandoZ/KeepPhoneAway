@@ -111,9 +111,6 @@ class SleepStatisticsDetail extends Component {
             this.setState({status : status})
             this._loadSleepPoints()
           })
-          .catch(error =>
-            alert(error)
-            );        
     }
     _storeData = async (id,data) => {
         try {

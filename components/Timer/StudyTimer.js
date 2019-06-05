@@ -72,6 +72,8 @@ class StudyTimer extends Component {
 
   Timerbegin=()=>{
     KeepAwake.activate()
+
+    // convert time format
     let sec=0
     let a=this.state.time
     sec+=(a[0]-'0')*36000000
@@ -79,6 +81,7 @@ class StudyTimer extends Component {
     sec+=(a[3]-'0')*600000
     sec+=(a[4]-'0')*60000
 
+    
     this.setState({
       display_hour:(a[0]-'0')*10+(a[1]-'0'),
       display_min:(a[3]-'0')*10+(a[4]-'0'),
@@ -86,14 +89,19 @@ class StudyTimer extends Component {
       isDisabled:true,
       Temp:sec/60000
     })
-
-    this.refs.circularProgress.animate(100,sec,Easing.linear)
     this.timer=setInterval(()=>{
       if(!this.timer)return;
       let h=this.state.display_hour
       let m=this.state.display_min
       let s=this.state.display_sec
-      if(s==0){if(m==0){h-=1;if(h<0)h=0;m=59}else m--;s=59;}
+      if(s==0){
+        if(m==0){
+          h-=1;if(h<0)
+          h=0;m=59
+        }
+        else m--;
+        s=59;
+      }
       else s--
       this.setState({
         display_hour:h,
@@ -101,6 +109,8 @@ class StudyTimer extends Component {
         display_sec:s,
       })
     },1000)
+
+    this.refs.circularProgress.animate(100,sec,Easing.linear)
   }
 
   renderFill=()=>{

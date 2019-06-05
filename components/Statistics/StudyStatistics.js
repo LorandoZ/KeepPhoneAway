@@ -110,10 +110,7 @@ class StudyStatisticsDetail extends Component {
             }
             this.setState({status : status})
             this._loadStudyPoints()
-          })
-          .catch(error =>
-            alert(error)
-            );        
+          })       
     }
     _storeData = async (id,data) => {
         try {
@@ -336,43 +333,3 @@ const styles = StyleSheet.create({
     },  
 })
 export {StudyStatistics, StudyStatisticsDetail};
-
-
-[
-    {
-        "name": "Mathematician",
-        "icon":"",
-        "url":"http://134.209.3.61/Study/Mathematician"
-    },
-    {
-        "name": "Physicist",
-        "url":"http://134.209.3.61/Study/Physicist"
-    },
-    {
-        "name": "Astronomer",
-        "url":""
-    },
-    {
-        "name": "Chemist",
-        "url":""
-    },
-    {
-        "name": "Biologist",
-        "url":""
-    },
-    {
-        "name": "Zoologist",
-        "url":""
-    },
-    {
-        "name": "Botanist",
-        "url":""
-    },
-    {
-        "name": "Geographer",
-        "url":""
-    }
-]
-
-
-

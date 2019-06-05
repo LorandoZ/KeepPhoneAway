@@ -110,10 +110,7 @@ class MealStatisticsDetail extends Component {
             }
             this.setState({status : status})
             this._loadMealPoints()
-          })
-          .catch(error =>
-            alert(error)
-            );        
+          })        
     }
     _storeData = async (id,data) => {
         try {
