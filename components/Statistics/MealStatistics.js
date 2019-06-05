@@ -5,13 +5,6 @@ import { FlatGrid } from 'react-native-super-grid';
 
 import { TheOverlay } from "./Stateless";
 
-class ItemDivideComponent extends Component {
-    render() {
-      return (
-        <View style={{height: 2, backgroundColor: '#cccccc'}}/>
-      );
-    }
-};
 class MealStatistics extends Component {
     constructor(props) {
         super(props);
@@ -91,7 +84,7 @@ class MealStatisticsDetail extends Component {
           status : [],
           isVisible : -1,
           MealPoints: 0,
-          RequiredPoints: 100,
+          RequiredPoints: 20,
         }
     }
     componentDidMount(){
@@ -163,16 +156,6 @@ class MealStatisticsDetail extends Component {
             Alert.alert(error)
         }
     }
-    _addMealPoints = async (PointsNeed) =>{
-        try{
-            let value=this.state.MealPoints+PointsNeed
-            let value_str=value.toString()
-            await AsyncStorage.setItem('MealPoints', value_str);
-            this.setState({MealPoints:value})
-        }catch(error){
-            Alert.alert(error)
-        }
-    }
     unlock = (name) => {
         let CurrentPoints=this.state.MealPoints
         let RequiredPoints=this.state.RequiredPoints
@@ -191,7 +174,7 @@ class MealStatisticsDetail extends Component {
         const data=[...this.state.data]
         return (
             <FlatGrid
-                itemDimension={120}
+                itemDimension={90}
                 items={data}
                 style={styles.gridView}
                 renderItem={({ item, index }) => (
@@ -205,7 +188,7 @@ class MealStatisticsDetail extends Component {
                                     source={{uri : 'http://134.209.3.61/Mark.jpg'}}
                                     style={styles.itemImage} 
                                 />
-                                <Text style={styles.itemName}>{item.name}</Text>
+                                <Text style={[styles.itemName,{color: 'white'}]}>{item.name}</Text>
                             </TouchableOpacity>
                             :<TouchableOpacity   
                                 style={[styles.itemContainer, { backgroundColor: 'white' }]}
@@ -215,7 +198,7 @@ class MealStatisticsDetail extends Component {
                                     source={{uri : item.img}}
                                     style={styles.itemImage} 
                                 />
-                                <Text style={styles.itemName}>{item.name}</Text>
+                                <Text style={[styles.itemName,{color: 'black'}]}>{item.name}</Text>
                             </TouchableOpacity>
                         }
                         <Overlay isVisible={this.state.isVisible===index ? true:false} >
@@ -225,7 +208,6 @@ class MealStatisticsDetail extends Component {
                                 name={item.name}
                                 RequiredPoints={this.state.RequiredPoints}
                                 Points={this.state.MealPoints}
-                                _addPoints={this._addMealPoints}
                                 unlock={this.unlock}     
                                 closeOverlay={this.closeOverlay}                          
                             />
@@ -264,7 +246,6 @@ const styles = StyleSheet.create({
         paddingLeft:20,
     },
     gridView: {
-    //    marginTop: 20,
         flex: 1,
     },
     itemContainer: {
@@ -275,18 +256,16 @@ const styles = StyleSheet.create({
         paddingTop:11,
         marginVertical: 5,
         marginHorizontal: 5,
-        height: 150,
+        height: 130,
     },
     itemName: {
-        fontSize: 14,
-        color: 'black',
+        fontSize: 12,
         fontWeight: '600',
         textAlign: "center",
     },
     itemImage: {
         width: "95%",
         height: "80%",
-      //  margin: 12,
         borderRadius:8,
     },
     overlayContainer: {
@@ -307,25 +286,18 @@ const styles = StyleSheet.create({
     overlayImage: {
         width: "60%",
         height: "40%",
-      //  margin: 12,
         borderRadius:8,
     },
     overlayName: {
         fontSize: 30,
-    //    color: '#fff',
         fontWeight: '600',
         textAlign: "center",
     },
     overlayIntro: {
         fontSize: 16,
-        // textBreakStrategy:'highQuality',
-    //    color: '#fff',
-    //    fontWeight: '600',
-        // textAlign: "center",
     },
     overlayPoints: {
         fontSize: 24,
-        // textBreakStrategy:'highQuality',
         color: 'red',
         fontWeight: '600',
          textAlign: "center",

@@ -5,14 +5,7 @@ import { FlatGrid } from 'react-native-super-grid';
 
 import { TheOverlay } from "./Stateless";
 
-class ItemDivideComponent extends Component {
-    render() {
-      return (
-        <View style={{height: 2, backgroundColor: '#cccccc'}}/>
-      );
-    }
-  };
-class StudyStatistics extends Component {
+class StudyStatistics extends Component {  //render the list award list
     constructor(props) {
         super(props);
         this.state = {
@@ -31,11 +24,11 @@ class StudyStatistics extends Component {
           .catch(error =>
             alert(error)
             );
-        this._navListener = this.props.navigation.addListener('willFocus', () => {
+        this._navListener = this.props.navigation.addListener('willFocus', () => {  //load points when user enter this screen 
             this._loadStudyPoints()
             })
     }
-    _loadStudyPoints = async () => {
+    _loadStudyPoints = async () => { //load points from asyncstorage
         try{
           let value_str=""
           value_str = await AsyncStorage.getItem('StudyPoints');
@@ -88,10 +81,10 @@ class StudyStatisticsDetail extends Component {
         super(props);
         this.state = {
           data : [],
-          status : [],
-          isVisible : -1,
+          status : [],      //determine weather the card is unlocked 
+          isVisible : -1,   //determine which overlay will be rendered
           StudyPoints: 0,
-          RequiredPoints: 100,
+          RequiredPoints: 500,   //the cost of every card 
         }
     }
     componentDidMount(){
@@ -102,25 +95,25 @@ class StudyStatisticsDetail extends Component {
                 data : data
             })
           })
-          .then(()=>{  //初始化状态
+          .then(()=>{       
             let status = []
-            for(let i=0;i<this.state.data.length;i++){
+            for(let i=0;i<this.state.data.length;i++){      //load status of every item
                 status.push('0')
                 this._retrieveData(this.state.data[i].name)
             }
             this.setState({status : status})
             this._loadStudyPoints()
-          })       
+          })
     }
-    _storeData = async (id,data) => {
+    _storeData = async (id,data) => {   //store status of card in the asyncstorage
         try {
             await AsyncStorage.setItem(id,data)
-            this._retrieveData(id)
+            this._retrieveData(id)  //update the state after changing the status
         } catch (error) {
             alert(error)
         }
     }
-    _retrieveData = async (id) => {
+    _retrieveData = async (id) => {     //get status of card from the asyncstorage
         try {
             var value = await AsyncStorage.getItem(id)
             if (value == null) {
@@ -128,7 +121,7 @@ class StudyStatisticsDetail extends Component {
             }
             else{
                 let status=this.state.status
-                for(let i=0;i<this.state.data.length;i++)
+                for(let i=0;i<this.state.data.length;i++)  //if any status is changed,find it and modify the state
                     if(id==this.state.data[i].name){
                         status[i]=value
                         break
@@ -139,7 +132,7 @@ class StudyStatisticsDetail extends Component {
             alert(error)
         }         
     }
-    _loadStudyPoints = async () => {
+    _loadStudyPoints = async () => {  //load points from asyncstorage
         try{
             let value_str=""
             value_str = await AsyncStorage.getItem('StudyPoints');
@@ -153,7 +146,7 @@ class StudyStatisticsDetail extends Component {
             Alert.alert(error)
         }
     }
-    _reduceStudyPoints = async (PointsNeed) =>{
+    _reduceStudyPoints = async (PointsNeed) =>{   //modify points in asyncstorage after user unlock a piece of card
         try{
             let value=this.state.StudyPoints-PointsNeed
             let value_str=value.toString()
@@ -163,17 +156,7 @@ class StudyStatisticsDetail extends Component {
             Alert.alert(error)
         }
     }
-    _addStudyPoints = async (PointsNeed) =>{
-        try{
-            let value=this.state.StudyPoints+PointsNeed
-            let value_str=value.toString()
-            await AsyncStorage.setItem('StudyPoints', value_str);
-            this.setState({StudyPoints:value})
-        }catch(error){
-            Alert.alert(error)
-        }
-    }
-    unlock = (name) => {
+    unlock = (name) => {  // the unlock operation
         let CurrentPoints=this.state.StudyPoints
         let RequiredPoints=this.state.RequiredPoints
         if(CurrentPoints >= RequiredPoints){
@@ -184,14 +167,14 @@ class StudyStatisticsDetail extends Component {
             Alert.alert('lack of points!')
         }       
     }
-    closeOverlay = (name) => {
+    closeOverlay = (name) => {    // close the overlay
         this.setState({ isVisible : -1 })     
     }
     render() {
         const data=[...this.state.data]
         return (
             <FlatGrid
-                itemDimension={120}
+                itemDimension={90}
                 items={data}
                 style={styles.gridView}
                 renderItem={({ item, index }) => (
@@ -225,7 +208,6 @@ class StudyStatisticsDetail extends Component {
                                     name={item.name}
                                     RequiredPoints={this.state.RequiredPoints}
                                     Points={this.state.StudyPoints}
-                                    _addPoints={this._addStudyPoints}
                                     unlock={this.unlock}     
                                     closeOverlay={this.closeOverlay}                          
                                 />
@@ -244,7 +226,6 @@ class StudyStatisticsDetail extends Component {
         );
     }
 }
-
 const styles = StyleSheet.create({
     StatisticsBar: {
         height: 30,
@@ -265,7 +246,6 @@ const styles = StyleSheet.create({
         paddingLeft:20,
     },
     gridView: {
-    //    marginTop: 20,
         flex: 1,
     },
     itemContainer: {
@@ -276,10 +256,10 @@ const styles = StyleSheet.create({
         paddingTop:11,
         marginVertical: 5,
         marginHorizontal: 5,
-        height: 150,
+        height: 130,
     },
     itemName: {
-        fontSize: 14,
+        fontSize: 12,
         color: '#fff',
         fontWeight: '600',
         textAlign: "center",
@@ -287,7 +267,6 @@ const styles = StyleSheet.create({
     itemImage: {
         width: "95%",
         height: "80%",
-      //  margin: 12,
         borderRadius:8,
     },
     overlayContainer: {
@@ -308,25 +287,18 @@ const styles = StyleSheet.create({
     overlayImage: {
         width: "60%",
         height: "40%",
-      //  margin: 12,
         borderRadius:8,
     },
     overlayName: {
         fontSize: 30,
-    //    color: '#fff',
         fontWeight: '600',
         textAlign: "center",
     },
     overlayIntro: {
         fontSize: 16,
-        // textBreakStrategy:'highQuality',
-    //    color: '#fff',
-    //    fontWeight: '600',
-        // textAlign: "center",
     },
     overlayPoints: {
         fontSize: 24,
-        // textBreakStrategy:'highQuality',
         color: 'red',
         fontWeight: '600',
          textAlign: "center",
