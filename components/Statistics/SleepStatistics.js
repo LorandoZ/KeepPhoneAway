@@ -5,13 +5,6 @@ import { FlatGrid } from 'react-native-super-grid';
 
 import { TheOverlay } from "./Stateless";
 
-class ItemDivideComponent extends Component {
-    render() {
-      return (
-        <View style={{height: 2, backgroundColor: '#cccccc'}}/>
-      );
-    }
-  };
 class SleepStatistics extends Component {
     constructor(props) {
         super(props);
@@ -91,7 +84,7 @@ class SleepStatisticsDetail extends Component {
           status : [],
           isVisible : -1,
           SleepPoints: 0,
-          RequiredPoints: 100,
+          RequiredPoints: 10,
         }
     }
     componentDidMount(){
@@ -166,16 +159,6 @@ class SleepStatisticsDetail extends Component {
             Alert.alert(error)
         }
     }
-    _addSleepPoints = async (PointsNeed) =>{
-        try{
-            let value=this.state.SleepPoints+PointsNeed
-            let value_str=value.toString()
-            await AsyncStorage.setItem('SleepPoints', value_str);
-            this.setState({SleepPoints:value})
-        }catch(error){
-            Alert.alert(error)
-        }
-    }
     unlock = (name) => {
         let CurrentPoints=this.state.SleepPoints
         let RequiredPoints=this.state.RequiredPoints
@@ -194,7 +177,7 @@ class SleepStatisticsDetail extends Component {
         const data=[...this.state.data]
         return (
             <FlatGrid
-                itemDimension={120}
+                itemDimension={90}
                 items={data}
                 style={styles.gridView}
                 renderItem={({ item, index }) => (
@@ -228,7 +211,6 @@ class SleepStatisticsDetail extends Component {
                                 name={item.name}
                                 RequiredPoints={this.state.RequiredPoints}
                                 Points={this.state.SleepPoints}
-                                _addPoints={this._addSleepPoints}
                                 unlock={this.unlock}     
                                 closeOverlay={this.closeOverlay}                          
                             />
@@ -267,8 +249,8 @@ const styles = StyleSheet.create({
         paddingLeft:20,
     },
     gridView: {
-    //    marginTop: 20,
         flex: 1,
+        backgroundColor:"black"
     },
     itemContainer: {
         justifyContent: "space-between",
@@ -278,7 +260,7 @@ const styles = StyleSheet.create({
         paddingTop:11,
         marginVertical: 5,
         marginHorizontal: 5,
-        height: 150,
+        height: 130,
     },
     itemName: {
         fontSize: 14,
@@ -289,7 +271,6 @@ const styles = StyleSheet.create({
     itemImage: {
         width: "95%",
         height: "65%",
-      //  margin: 12,
         borderRadius:8,
     },
     overlayContainer: {
@@ -310,25 +291,18 @@ const styles = StyleSheet.create({
     overlayImage: {
         width: "60%",
         height: "40%",
-      //  margin: 12,
         borderRadius:8,
     },
     overlayName: {
         fontSize: 30,
-    //    color: '#fff',
         fontWeight: '600',
         textAlign: "center",
     },
     overlayIntro: {
         fontSize: 16,
-        // textBreakStrategy:'highQuality',
-    //    color: '#fff',
-    //    fontWeight: '600',
-        // textAlign: "center",
     },
     overlayPoints: {
         fontSize: 24,
-        // textBreakStrategy:'highQuality',
         color: 'red',
         fontWeight: '600',
          textAlign: "center",

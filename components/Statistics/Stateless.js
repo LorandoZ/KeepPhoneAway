@@ -22,10 +22,6 @@ const TheOverlay =(props)=> (          //FS=0 => UNlocked    FS=1 => Locked
                     <Text style={styles.overlayPoints}>Required Points: {props.RequiredPoints}/{props.Points}</Text> 
                 </ScrollView>
                 <Button
-                    title="+1"
-                    onPress={()=>{props._addPoints(1)}}
-                />
-                <Button
                     title="     UNLOCK     "
                     onPress={()=>{props.unlock(props.name)}}
                 />
@@ -45,50 +41,6 @@ const TheOverlay =(props)=> (          //FS=0 => UNlocked    FS=1 => Locked
     </View>
 )
 const styles = StyleSheet.create({
-    StatisticsBar: {
-        height: 30,
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'white'
-    },
-    StatisticData: {
-        flex: 1,
-        fontSize: 15,
-        textAlign: "center",
-    },
-    Classification: {
-        flex: 1,
-        fontSize: 20,
-        textAlign: "left",
-        paddingLeft:20,
-    },
-    gridView: {
-    //    marginTop: 20,
-        flex: 1,
-    },
-    itemContainer: {
-        justifyContent: "space-between",
-        alignItems: "center",
-        borderRadius: 8,
-        padding: 10,
-        paddingTop:11,
-        marginVertical: 5,
-        marginHorizontal: 5,
-        height: 150,
-    },
-    itemName: {
-        fontSize: 14,
-        color: '#fff',
-        fontWeight: '600',
-        textAlign: "center",
-    },
-    itemImage: {
-        width: "95%",
-        height: "80%",
-      //  margin: 12,
-        borderRadius:8,
-    },
     overlayContainer: {
         justifyContent: "space-around",
         alignItems: "center",
@@ -107,25 +59,18 @@ const styles = StyleSheet.create({
     overlayImage: {
         width: "60%",
         height: "40%",
-      //  margin: 12,
         borderRadius:8,
     },
     overlayName: {
         fontSize: 30,
-    //    color: '#fff',
         fontWeight: '600',
         textAlign: "center",
     },
     overlayIntro: {
         fontSize: 16,
-        // textBreakStrategy:'highQuality',
-    //    color: '#fff',
-    //    fontWeight: '600',
-        // textAlign: "center",
     },
     overlayPoints: {
         fontSize: 24,
-        // textBreakStrategy:'highQuality',
         color: 'red',
         fontWeight: '600',
          textAlign: "center",
