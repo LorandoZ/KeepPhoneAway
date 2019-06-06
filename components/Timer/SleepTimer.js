@@ -40,7 +40,8 @@ class SleepTimer extends Component {
 
   componentWillMount(){
     this._loadSleepPoints()
-    AppState.addEventListener('change',this._resetCircularProgress)
+    this._resetCircularProgress()
+    AppState.addEventListener('change',()=>this._resetCircularProgress())
     this._navListener = this.props.navigation.addListener('didFocus', () => {
       this._loadSleepPoints()
       this._loadSleepTime()
@@ -48,7 +49,7 @@ class SleepTimer extends Component {
     setInterval(()=>{
       let value=moment().format('HH:mm')
       if(value==this.state.time)this.Timerbegin()
-    },59000)
+    },10000)
   }
 
   _loadSleepTime = async()=>{
@@ -152,9 +153,8 @@ class SleepTimer extends Component {
   }
 
   componentWillUnmount(){
-    this._resetCircularProgress()
-    AppState.removeEventListener('change',this._resetCircularProgress)
-    this._navListener.remove()
+    AppState.removeEventListener('change',this._resetCircularProgress());
+    this._navListener.remove();
   }
 
   render() {
@@ -233,6 +233,7 @@ class SleepTimerSetting extends Component {
             fontSize:40
           }
         }}
+        onDateChange={(date) => {this.setState({time: date})}}
       />
       <Text></Text><Text></Text><Text></Text><Text></Text>
       <Button

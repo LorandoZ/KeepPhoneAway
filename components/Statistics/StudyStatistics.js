@@ -49,7 +49,7 @@ class StudyStatistics extends Component {  //render the list award list
                 rightElement={">     "}
                 titleStyle={styles.Classification}
                 topDivider={true}
-                onPress={()=>{this.props.navigation.push('StudyStatisticsDetail',{
+                onPress={()=>{this.props.navigation.navigate('StudyStatisticsDetail',{
                     name:item.name,
                     url:item.url,
                     });

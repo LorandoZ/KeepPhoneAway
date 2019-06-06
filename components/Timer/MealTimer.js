@@ -37,8 +37,9 @@ class MealTimer extends Component {
   }
 
   componentWillMount(){
+    this._resetCircularProgress()
+    AppState.addEventListener('change',()=>this._resetCircularProgress())
     this._loadMealPoints()
-    AppState.addEventListener('change',this._resetCircularProgress)
     this._navListener = this.props.navigation.addListener('didFocus', () => {
       this._loadMealPoints()
       this._resetCircularProgress()
@@ -147,9 +148,8 @@ class MealTimer extends Component {
   }
 
   componentWillUnmount(){
-    this._resetCircularProgress()
-    AppState.removeEventListener('change',this._resetCircularProgress)
-    this._navListener.remove()
+    AppState.removeEventListener('change',this._resetCircularProgress());
+    this._navListener.remove();
   }
   
   render() {

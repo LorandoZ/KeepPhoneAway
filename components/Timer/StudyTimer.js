@@ -37,6 +37,8 @@ class StudyTimer extends Component {
   }
 
   componentWillMount(){
+    this._resetCircularProgress()
+    AppState.addEventListener('change',()=>this._resetCircularProgress())
     this._loadStudyPoints()
     this._navListener = this.props.navigation.addListener('willFocus', () => {
       this._loadStudyPoints()
@@ -153,7 +155,7 @@ class StudyTimer extends Component {
   }
 
   componentWillUnmount(){
-    this._resetCircularProgress()
+    AppState.removeEventListener('change',this._resetCircularProgress());
     this._navListener.remove();
   }
 

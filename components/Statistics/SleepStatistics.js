@@ -49,7 +49,7 @@ class SleepStatistics extends Component {
                 rightElement={">     "}
                 titleStyle={styles.Classification}
                 topDivider={true}
-                onPress={()=>{this.props.navigation.push('SleepStatisticsDetail',{
+                onPress={()=>{this.props.navigation.navigate('SleepStatisticsDetail',{
                     name:item.name,
                     url:item.url,
                     });

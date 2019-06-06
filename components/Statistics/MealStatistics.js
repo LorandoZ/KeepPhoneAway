@@ -49,7 +49,7 @@ class MealStatistics extends Component {
                 rightElement={">     "}
                 titleStyle={styles.Classification}
                 topDivider={true}
-                onPress={()=>{this.props.navigation.push('MealStatisticsDetail',{
+                onPress={()=>{this.props.navigation.navigate('MealStatisticsDetail',{
                     name:item.name,
                     url:item.url,
                     });
