@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, AsyncStorage, Easing, Alert, AppState} from "react-native";
+import { View, Text, AsyncStorage, Easing, Alert, AppState, StatusBar} from "react-native";
 import { Button,Icon, Overlay } from 'react-native-elements';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import DatePicker from 'react-native-datepicker'
@@ -43,6 +43,7 @@ class SleepTimer extends Component {
     this._resetCircularProgress()
     AppState.addEventListener('change',()=>this._resetCircularProgress())
     this._navListener = this.props.navigation.addListener('didFocus', () => {
+      StatusBar.setBackgroundColor('#2196f3');
       this._loadSleepPoints()
       this._loadSleepTime()
     })
@@ -68,8 +69,8 @@ class SleepTimer extends Component {
       let value_str=""
       value_str = await AsyncStorage.getItem('SleepPoints');
       if(value_str==null){
-        await AsyncStorage.setItem('SleepPoints','0');
-        value_str='0'
+        await AsyncStorage.setItem('SleepPoints','5');
+        value_str='5'
       }
       let value=parseInt(value_str)
       this.setState({SleepPoints:value})

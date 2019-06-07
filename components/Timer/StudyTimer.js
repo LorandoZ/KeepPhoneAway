@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, AsyncStorage,Easing, Alert, AppState, Vibration } from "react-native";
+import { View, Text, AsyncStorage,Easing, Alert, AppState, Vibration, StatusBar } from "react-native";
 import { Button,Icon } from 'react-native-elements';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import DatePicker from 'react-native-datepicker'
@@ -41,6 +41,7 @@ class StudyTimer extends Component {
     AppState.addEventListener('change',()=>this._resetCircularProgress())
     this._loadStudyPoints()
     this._navListener = this.props.navigation.addListener('willFocus', () => {
+      StatusBar.setBackgroundColor('#2196f3');
       this._loadStudyPoints()
       this._resetCircularProgress()
     })
@@ -51,8 +52,8 @@ class StudyTimer extends Component {
       let value_str=""
       value_str = await AsyncStorage.getItem('StudyPoints');
       if(value_str==null){
-        await AsyncStorage.setItem('StudyPoints','0');
-        value_str='0'
+        await AsyncStorage.setItem('StudyPoints','2000');
+        value_str='2000'
       }
       let value=parseInt(value_str)
       this.setState({StudyPoints:value})

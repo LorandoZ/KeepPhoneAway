@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     },
     gridView: {
         flex: 1,
-        backgroundColor:"black"
+        // backgroundColor:"black"
     },
     itemContainer: {
         justifyContent: "space-between",
